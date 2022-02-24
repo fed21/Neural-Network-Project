@@ -1,0 +1,36 @@
+set grid
+
+basename='acc_vs_memory'
+load './common.gp'
+
+set size square 0.6
+set xlabel "Peak memory (MB)"
+set ylabel "Imagenet-val top1 acc. (%)"
+
+set xtics ("1GB" 1000, "3GB" 3000, "5GB" 5000, "7GB" 7000, "10GB" 10000)
+set ytics ("  " 77, "  " 78, "  " 79, "  " 80, "  " 81, "  " 82, "  " 83, "  " 84, "  " 85)
+
+
+#set xrange[0:800]
+set xrange[970:11000]
+set yrange[77:85.5]
+
+set key bottom right
+
+#set title "Accuracy vs. Peak Memory"
+
+#plot "dat_acc_vs_memory.txt" using 1:2 with linesp title "Our-S60" ls 1 lw 2,  \
+#     "dat_acc_vs_memory.txt" using 1:3 with linesp title "Swin-T" ls 2 lw 2, \
+#     "dat_acc_vs_memory.txt" using 1:4 with linesp title "DeiT-S" ls 3 lw 2,  \
+#     "dat_acc_vs_memory.txt" using 1:5 with linesp title "ResNet50" ls 4 lw 2
+plot "dat_all.txt" using 6:(stringcolumn(2) eq "EfficientNet"? $7:1/0) with linesp title "EfficientNet" ls 3 lw 2, \
+     "dat_all.txt" using 6:(stringcolumn(2) eq "ViT:DeiT"? $7:1/0) with linesp title "ViT: DeiT" ls 4 lw 2, \
+     "dat_all.txt" using 6:(stringcolumn(2) eq "CaiT"? $7:1/0) with linesp title "ViT: CaiT" ls 5 lw 2, \
+     "dat_all.txt" using 6:(stringcolumn(2) eq "Swin"? $7:1/0) with linesp title "Swin" ls 2 lw 2, \
+     "dat_all.txt" using 6:(stringcolumn(2) eq "ours"? $7:1/0) with linesp title "Ours" ls 1 lw 2
+     
+#     "dat_all.txt" using 6:(stringcolumn(2) eq "RegNetY"? $7:1/0) with linesp title "ConvNet: RegNetY" ls 6 lw 2, \
+
+
+load './gen_pdf.gp'
+

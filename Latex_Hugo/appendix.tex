@@ -1,0 +1,299 @@
+\appendix\newpage
+
+\input{supplementary_title}
+
+
+
+\section{Hyper-parameter study: exploration phase}
+\label{sec:apdx_explo}
+In this appendix we discuss the grid searches that we have done for the material presented in this paper. 
+During our exploration phase, we have modified only a few variables hyper-parameters to avoid some potential overfitting, which usually results from the exploration of a large hyper-parameter space: we have solely changed the learning rate (LR), the weight decay (WD) and the drop-path parameter involved in stochastic depth (SD). 
+For the same reason we have selected a relatively coarse grid search.
+% 
+We have fixed the batch size to 2048, and changed the hyper-parameters by setting them from the following values:
+\begin{itemize}
+    \item LR $\in$ \{\ 0.001, 0.0015, 0.002, 0.003, 0.004, 0.005 \} ;
+    \item WD $\in$ \{\ 0.001, 0.01, 0.03, 0.05, 0.1, 0.15, 0.2 \} ; 
+    \item SD $\in$ \{\ 0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4 ,0.5 \}.
+\end{itemize}
+
+Note, we have not exhaustively spanned the product space of these values with a grid search: after a few tests on a few models (mostly: S36 \& S60), we concluded that we could set LR\,=\,$3.10^{-3}$. We had the same conclusion for setting WD\,=\,0.01, yet for larger models trained on Imagenet-val, we preemptively increased the regularization to WD=0.05 for larger models  ($d$\,=\,$384$) in case the lack of regularization would have affected the convergence (which we  noticed with very small values of WD for small models, see our ablation in Table~\ref{tab:sensitivity_hparams}). However, the difference does not seem statistically significant from the value WD\,=\,0.01 in the few experiments that we have done subsequently. While our choice are likely not optimal for all models, in our opinion the benefit of taking a single tuple (LR,WD) for models of all depth vastly overcome the risk of overfitting/over-estimating the performance. 
+The other hyper-parameters are inherited from typical values in the literature~\cite{Touvron2020TrainingDI,wightman2021resnet} without any optimization from us, and therefore could potentially be improved. 
+
+Regarding the last hyper-parameter SD, as observed by Touvron et al.~\cite{touvron2021going} for vision transformers, we noticed that validating this hyper-parameter properly is key to performance. Since this validation is carried out on Imagenet, in the main paper we have reported results on Imagenet-V2 to ensure an independent test set. 
+
+
+\section{Ablations}
+% 
+
+\paragraph{Hyper-parameters. }
+% 
+Table~\ref{tab:sensitivity_hparams} and~\ref{tab:sensitivity_sd} provide the accuracy obtained when varying our hyper-parameters with the S60 model, with our baseline as LR\,=\,$3.10^{-3}$, WD\,=\,0.01 and SD\,=\,0.15. 
+
+
+\begin{table}[h]
+\centering
+\scalebox{0.8}{
+\begin{tabular}{lllll}
+\toprule
+Model & LR & WD & SD & Imagenet-val \\
+\toprule
+\multicolumn{5}{c}{\textbf{ablation: learning rate}} \\[5pt]
+S60	&  0.0005  & 0.01  &  0.15  &  \quad 77.00  \\
+S60	&  0.0010  & 0.01  &  0.15  &  \quad 80.70  \\
+S60	&  0.0015  & 0.01  &  0.15  &  \quad 81.58  \\
+S60	&  0.0020  & 0.01  &  0.15  &  \quad 81.92  \\
+\rowcolor{blue!5}  
+S60	&  0.0030  & 0.01  &  0.15  &  \quad 82.10  \\
+S60	&  0.0040  & 0.01  &  0.15  &  \quad 81.59  \\
+S60	&  0.0050  & 0.01  &  0.15  &  \quad 80.31  \\
+\rowcolor{red!5}  
+S60	&  0.0070  & 0.01  &  0.15  &  \quad failed@34  \\
+\toprule
+\multicolumn{5}{c}{\textbf{ablation: weight decay}} \\[5pt]
+\rowcolor{red!5}  
+S60  & 0.0030  &  0.001  &  0.15  &  \quad failed@92   \\ 
+\rowcolor{red!5}  
+S60  & 0.0030  &  0.002  &  0.15  &  \quad failed@105  \\  
+S60  & 0.0030  &  0.005  &  0.15  &  \quad 81.66    \\
+\rowcolor{blue!5} 
+S60  & 0.0030  &  0.010  &  0.15  &  \quad 82.10    \\
+S60  & 0.0030  &  0.020  &  0.15  &  \quad 82.03    \\
+S60  & 0.0030  &  0.050  &  0.15  &  \quad 81.59    \\
+S60  & 0.0030  &  0.100  &  0.15  &  \quad 81.33    \\
+\bottomrule
+\end{tabular}}
+\caption{Sensitivity to our hyper-parameters for the S60 model: Learning Rate (LR), Weight Decay (WD). Rows highlight in red with ``fail@E'' indicates that the training has failed at Epoch E. The model reaches a reasonable performance over a wide set of values. For instance the intervals $\mathrm{LR} \in [0.2,0.3]$ or $\mathrm{WD} \in [0.01,0.02] $ lead to similar values. The optimization is stable with  reasonable performance for hyper-parameters covering large intervals ($\mathrm{LR} \in [0.1,0.5]$ or $\mathrm{WD} \in [0.005,0.05]$). 
+\label{tab:sensitivity_hparams}} 
+\end{table}
+
+Some regularization is needed for convergence and the learning rate should be kept below a threshold (0.005). 
+The LR and SD hyper-parameters are the more influential on the performance. Table~\ref{tab:sensitivity_sd} analyses their interaction, which shows that they can be set relatively independently.  
+
+\begin{table}[h]
+\centering
+\scalebox{0.8}{
+\begin{tabular}{l|cccc}
+\toprule
+ & \multicolumn{4}{c}{\textbf{learning rate}} \\[5pt]
+SD			&   0.001  & 0.0015   & 0.002  &   0.003  \\
+\midrule	
+	0   	&	79.51  & 80.01	  & 80.56  &   80.77  \\
+	0.05	&	80.62  & 81.56	  & 81.60  &   81.82  \\
+	0.1  	&	80.75  & 81.78	  & 82.00  &   81.90  \\
+	0.15	&	80.70  & 81.58	  & 81.92  &   \cellcolor{blue!5}82.10  \\
+	0.2 	&	80.43  & 81.44	  & 81.70  &   81.90  \\
+\bottomrule
+\end{tabular}}
+\caption{Analysis of Learning rate vs stochastic depth hyper-parameters  (S60, WD=0.01). 
+\label{tab:sensitivity_sd}} 
+\end{table}
+
+
+
+\paragraph{LayerNorm vs BatchNorm.}
+LayerNorm is the most used normalisation in transformers while BatchNorm is the most used normalisation with ConvNets.
+For simplicity we have used LayerNorm as it does not require (batch) statistics synchronisation during training, which tends to significantly slow the training, especially on an infrastructure with relatively high synchronisation costs.
+
+In Table~\ref{tab:layernorm_vs_batchnorm}
+we compare the effects of LayerNorm with those of  BatchNorm. 
+We can see that BatchNorm increases the \ournet top-1 accuracy. This difference tends to be lower for the deeper models.
+%
+
+\begin{table}[t]
+%
+\caption{Comparison of \ournet with Layer-Normalization and Batch-Normalization: Performance on Imagenet-1k-val after pre-training on Imagenet-1k-train only. The \textit{drop-path} parameter value is obtained by cross-validation on Imagenet1k for each model. Batch-Normalization usually provides a slight improvement in classification, but 
+but with large models the need to synchronization can significantly slow down the training (in  some cases like training a B120 model on AWS, it almost doubled the training time). 
+Therefore we do not use it in the main paper. 
+%
+\label{tab:layernorm_vs_batchnorm}}
+\vspace{-0.5ex}
+\centering
+\scalebox{0.8}{
+     %
+    \begin{tabular}{lccc}
+    \toprule
+    & & \multicolumn{2}{c}{Imagenet-val Top-1 acc.}   \\
+    \cmidrule(l){3-4}
+    Model  & \textit{drop-path} & LayerNorm  & BatchNorm  \\ 
+    \midrule   
+S20	& 0.0\pzo  & 78.7	&  78.8  \\
+S36	& 0.05     & 80.7	&  81.2  \\
+S60	& 0.15     & 82.1	&  82.4  \\
+S120& 0.2\pzo  & 83.2	&  83.4  \\
+B36 & 0.2\pzo  & 82.8	&  83.5  \\
+B60 & 0.3\pzo  & 83.5	&  83.9  \\
+B120& 0.4\pzo  & 84.1	&  84.3  \\
+%
+%
+    \bottomrule 
+    \end{tabular}}
+%
+\end{table}
+
+
+\section{Additional results}
+
+\begin{table}[h!]
+
+    \caption{
+\textbf{Comparison of architectures on classification.}
+We compare different architectures  based on convolutional networks, Transformers and feedforward networks with comparable FLOPs and number of parameters. All models are trained on ImageNet1k only without distillation nor self-supervised pre-training.
+We report Top-1 accuracy on the validation set of ImageNet1k and ImageNet-V2 with different measure of complexity: throughput, FLOPs, number of parameters and peak memory usage. 
+The throughput and peak memory are measured on a single V100-32GB GPU with batch size fixed to 256 and mixed precision. 
+For ResNet~\cite{He2016ResNet} and RegNet~\cite{Radosavovic2020RegNet} we report the improved results from Wightman et al.~\cite{wightman2021resnet}. Note that different models may have received a different optimization effort. $\uparrow$R indicates that the model is fine-tuned at the resolution $R$.
+\label{tab:mainres_ext}}
+\vspace{-1ex}
+    \centering
+%
+    \scalebox{0.66}{
+    \begin{tabular}{@{\ }l@{}c@{\ \ }c@{\ \ \ }r@{\ \ }r|cc@{\ }}
+        \toprule
+        Architecture        & nb params & throughput & FLOPs & Peak Mem & Top-1  & V2 \\
+                      & ($\times 10^6$) & (im/s) & ($\times 10^9$) & (MB)\ \ \ \  & Acc.  & Acc. \\[3pt]
+
+\toprule
+\multicolumn{7}{c}{\textbf{``Traditional'' ConvNets}} \\[3pt]
+     ResNet-50~\cite{He2016ResNet,wightman2021resnet} &  25.6    & 2587  &  4.1      & 2182 & 80.4  & 68.7 \\
+    \midrule
+	 RegNetY-4GF~\cite{Radosavovic2020RegNet,wightman2021resnet}       & 20.6  & 1779  & \tzo4.0 & 3041 & 81.5  & 70.7 \\
+	 RegNetY-8GF~\cite{Radosavovic2020RegNet,wightman2021resnet}       & 39.2  & 1158 & \tzo8.0 & 3939 & 82.2 & 71.1 \\
+	 RegNetY-12GF~\cite{Radosavovic2020RegNet,wightman2021resnet}      & 52  & 835.1 & \dzo12.0 & 5059 & \\
+	 RegNetY-16GF~\cite{Radosavovic2020RegNet,Touvron2020TrainingDI}      & 83.6  & \pzo714 & \dzo16.0 & 5204   & 82.9  & 72.4 \\
+	 RegNetY-32GF~\cite{Radosavovic2020RegNet,wightman2021resnet}      & 145  & 441.7  & \dzo32.0 & 5745.4   & \\
+
+    \midrule
+    EfficientNet-B0~\cite{tan2019efficientnet} & 5.3  &3856  & \tzo0.4  &  1835  &77.1  & 64.3 \\
+    EfficientNet-B1~\cite{tan2019efficientnet} &7.8   & 2450 & \tzo0.7  &  2111  & 79.1  & 66.9\\
+    EfficientNet-B2~\cite{tan2019efficientnet} & 9.2   & 1851 & \tzo1.0 & 2584   & 80.1  & 68.8 \\
+	 EfficientNet-B3~\cite{tan2019efficientnet} & 12.0  & 1114 & \tzo1.8  &  4826  & 81.6  & 70.6\\
+	 EfficientNet-B4~\cite{tan2019efficientnet} & 19.0  & \pzo573 & \tzo4.2 &  10006  & 82.9  & 72.3\\
+	 EfficientNet-B5~\cite{tan2019efficientnet} & 30.0  & \pzo268 & \tzo9.9 &  11046  & 83.6  & 73.6\\
+	 \midrule
+	 NFNet-F0~\cite{Brock2021HighPerformanceLI} & 71.5 & \pzo950 & 12.4 & 4338 & 83.6  & 72.6 \\
+	 NFNet-F1~\cite{Brock2021HighPerformanceLI} & 132.6 & \pzo337 & 35.5 & 6628 & 84.7  & 74.4\\
+	 NFNet-F2~\cite{Brock2021HighPerformanceLI} & 193.8 & \pzo184 & 62.6 & 8144 & 85.1  & 74.3\\
+	 NFNet-F3~\cite{Brock2021HighPerformanceLI} & 254.9 & \pzo101 & 115.0 & 11240 & 85.7  & 75.2 \\
+	 NFNet-F4~\cite{Brock2021HighPerformanceLI} & 316.1 & \dzo59 & 215.3 & 16587 & 85.9  & 75.2 \\
+
+\toprule
+\multicolumn{7}{c}{\textbf{Vision Transformers and derivatives}} \\ [5pt]
+
+    ViT: DeiT-T~\cite{Touvron2020TrainingDI}   & 5.7  & 3774 & \tzo1.3  &   536 & 72.2 &  60.4\\
+    ViT: DeiT-S~\cite{Touvron2020TrainingDI,wightman2021resnet}  & 22.0  & 1891 & \tzo4.6 & 987 & 80.6 &  69.4\\
+	ViT: DeiT-B~\cite{Touvron2020TrainingDI}    & 86.6  & \pzo831  & \dzo17.5 & 2078 & 81.8 &  71.5\\
+	ViT: DeiT-B$\uparrow 384$~\cite{Touvron2020TrainingDI}   & 86.6  & \pzo195 & \dzo55.5 & 8956  & 83.1 & 72.4 \\
+	\midrule
+	Swin-T-224~\cite{liu2021swin} & 28.3 & 1109 & 4.5 & 3345 & 81.3 &  69.5 \\
+    Swin-S-224~\cite{liu2021swin} & 49.6 & \pzo718 & 8.7 & 3470 &  83.0 &   71.8 \\
+
+    Swin-B-224~\cite{liu2021swin} & 87.8  & \pzo532 & 15.4 & 4695 & 83.5 &   \_ \\
+    Swin-B-384~\cite{liu2021swin} & 87.8  & \pzo159 & 47.0 & 19385 & 84.5 &   \_ \\
+    \midrule
+	CaiT-S24~\cite{touvron2021going}         & 46.9 & \pzo470 & 9.4 & 1469 & 82.7 &  \_ \\
+	CaiT-M36~\cite{touvron2021going}         & 271.2  & \pzo159 & 53.7 & 3828 & 83.8  & \_\\
+
+	
+	
+    \midrule
+	
+    XciT-S-12/16~\cite{el2021xcit} & 26.3 & 1372 & 4.8  & 1330 & 82.0   & \_ \\
+    XciT-S-24/16~\cite{el2021xcit} & 47.7 & \pzo730 & 9.1  & 1452 & 82.6   & \_\\
+    XciT-M-24/16~\cite{el2021xcit} & 84.4 & 545.8 & 16.2 & 2010.7 & 82.7 & \_  \\
+
+
+    \toprule
+\multicolumn{7}{c}{\textbf{Vision MLP}} \\[3pt]
+    ResMLP-S12~\cite{Touvron2021ResMLPFN} &  15.0  & 3301 & \tzo3.0  & 755 &  76.6 &  64.4\\
+    ResMLP-S24~\cite{Touvron2021ResMLPFN} &  30.0  &  1681    & \tzo6.0  & 844 &  79.4 &  67.9 \\
+    ResMLP-B24~\cite{Touvron2021ResMLPFN} &  116.0 &      1120    & \dzo23.0 & 930  &   81.0 &  69.0 \\
+    \toprule
+    \multicolumn{7}{c}{\textbf{Patch-based ConvNets}} \\[3pt]
+    ResMLP-S12 conv3x3~\cite{Touvron2021ResMLPFN} &  16.7  & 3217 & \tzo3.2  & 763 &  77.0  & 65.5\\
+    ConvMixer-768/32~\cite{anonymous2022patches} & 21.1 & \pzo271 & 20.9 & 2644 & 80.2  & \_\\
+    ConvMixer-1536/20~\cite{anonymous2022patches} & 51.6 & \pzo157 & 51.4 & 5312 & 81.4  & \_\\
+    \midrule
+    \rowcolor{Goldenrod}
+    \ours-S36 & 16.2  & 1799  & 2.6 & 1270 &  80.7 &  69.7 \\
+    \rowcolor{Goldenrod}
+    \ours-S60 & 25.2  & 1125 & 4.0 & 1321 & 82.1 &  71.0\\
+    \rowcolor{Goldenrod}
+    \ours-S120&  47.7 & \pzo580 & 7.5 & 1450 & 83.2 &  72.5\\
+    \rowcolor{Goldenrod}
+    \ours-B60 &  99.4 & \pzo541 & 15.8 & 2790 & 83.5 &   72.6\\
+    \rowcolor{Goldenrod}
+    \ours-B120 & 188.6  & \pzo280 & 29.9  & 3314 & 84.1 & 73.9\\
+    \midrule
+    \rowcolor{Goldenrod}
+    \ours-S60$\uparrow384$ & 25.2  & \pzo392 & 11.8 & 3600 & 83.7 &  73.4 \\
+    \rowcolor{Goldenrod}
+   \ours-B120$\uparrow384$& 188.6  & \dzo96 & 87.7 & 7587 & 85.2  & 75.6\\
+    \bottomrule
+    \end{tabular}}
+\end{table}
+
+
+								
+\section{Transfer Learning experiments}
+\label{sec:transfer}
+
+We evaluate our architecture on 6 transfer learning tasks. The datasets used are summarized Table~\ref{tab:dataset}.  
+For fine-tuning we used the procedure used in CaiT~\cite{touvron2021going} and DeiT~\cite{Touvron2020TrainingDI}.
+Our results are summarized Table~\ref{tab:transfer}.
+We can observe that our architecture achieves competitive performance on transfer learning tasks.
+
+\begin{table}
+\caption{Datasets used for our transfer learning tasks.  \label{tab:dataset}}
+\centering
+\scalebox{0.9}{
+\begin{tabular}{l|rrr}
+\toprule
+Dataset & Train size & Test size & \#classes   \\
+\midrule
+iNaturalist 2018~\cite{Horn2018INaturalist}& 437,513   & 24,426 & 8,142 \\ 
+iNaturalist 2019~\cite{Horn2019INaturalist}& 265,240   & 3,003  & 1,010  \\ 
+Flowers-102~\cite{Nilsback08}& 2,040 & 6,149 & 102  \\ 
+Stanford Cars~\cite{Cars2013}& 8,144 & 8,041 & 196  \\  
+CIFAR-100~\cite{Krizhevsky2009LearningML}  & 50,000    & 10,000 & 100   \\ 
+CIFAR-10~\cite{Krizhevsky2009LearningML}  & 50,000    & 10,000 & 10   \\ 
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+\begin{table}
+    \caption{Results in transfer learning. 
+    \label{tab:transfer}}
+    \centering
+    \scalebox{0.7}{
+    \begin{tabular}{l|cccccc|r}
+    \toprule
+    Model                                      
+        & \rotatebox{90}{CIFAR-10}
+        & \rotatebox{90}{CIFAR-100}  
+        & \rotatebox{90}{Flowers} 
+        & \rotatebox{90}{Cars} 
+        & \rotatebox{90}{iNat-18} 
+        & \rotatebox{90}{iNat-19} 
+        & \rotatebox{90}{FLOPs}\\
+    \midrule
+
+    ResNet-50~\cite{wightman2021resnet} & 98.3 & 86.9 & 97.9 & 92.7   & \_   & 73.9   &  4.1B\\
+    Grafit~\cite{Touvron2020GrafitLF}  & \_& \_ & 98.2 & 92.5   & 69.8  & 75.9   & 4.1B\\
+    \midrule
+    EfficientNet-B7~\cite{tan2019efficientnet}  & 98.9 & 91.7  & 98.8 & 94.7 & \_ & \_ & 37.0B \\
+    \midrule       
+    ViT-B/16~\cite{dosovitskiy2020image} & 98.1 & 87.1 & 89.5 & \_   & \_   & \_   &  55.5B\\
+    ViT-L/16~\cite{dosovitskiy2020image}& 97.9 & 86.4 & 89.7 & \_   & \_   & \_   &  190.7B\\
+    DeiT-B~\cite{Touvron2020TrainingDI} & 99.1 & 90.8 & 98.4 & 92.1 & 73.2 & 77.7 &  17.5B \\
+    CaiT-S-36~\cite{touvron2021going}   & 99.2 & 92.2 & 98.8 & 93.5 & 77.1 & 80.6 & 13.9B\\
+    CaiT-M-36~\cite{touvron2021going}   & \textbf{99.3} & \textbf{93.3} & 99.0 & 93.5 & 76.9 & 81.7 & 53.7B\\
+    \midrule   
+    Ours-S60  & 99.2  & 91.4 & 98.8  & 94.0 & 72.9 & 78.1 & 4.0B \\
+    Ours-B120 & 99.2  & 91.1  & 99.0 & 94.4 & 74.3 & 79.5 & 29.9B \\
+    \midrule   
+    Ours-S60 @ 320 & 99.1  & 91.4 & 98.9 & 94.5 & 76.8 & 81.4 & 8.2B \\
+    Ours-B120 @ 320 &99.1  & 91.2 & \textbf{99.1} & \textbf{94.8} & \textbf{79.6} & \textbf{82.5} & 60.9B \\
+    \bottomrule
+    \end{tabular}}
+\end{table}

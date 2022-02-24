@@ -1,0 +1,20 @@
+\section{Conclusion}
+
+In this paper, we introduced a full patch-based ConvNet with no pyramidal structure. %
+We used an attention-based pooling on top of the trunk, akin to the attention mechanism in transformers, which offers visualization properties. 
+Our model is only parametrized by its width and depth, and its training does not require a heavy hyper-parameter search. %
+We demonstrated its interest on several computer vision tasks: classification, segmentation, detection.
+\bigskip
+
+\noindent\textbf{Limitations:\,} There is no perfect metric for measuring the overall performance of a given neural network architecture~\cite{Dehghani2021TheEM}. 
+We have provided 4 different metrics but there are probably some aspects that are not considered.
+Deep and wide models have the same behaviour with respect to FLOPs but the wider models have the advantage to be associated with a lower latency~\cite{Goyal2021NondeepN,Zagoruyko2016WideRN}.
+% 
+We have mostly experimented with depth rather than width because deep models consume less memory at inference time, which makes them an appealing choice when dealing with higher resolution images~\cite{Bello2021RevisitingRI}, as is the case in segmentation and detection. 
+
+%
+\bigskip
+
+%
+\noindent\textbf{Broader impact:\,} 
+Large scale deep learning models are effective for many different computer vision applications, but the way they reach their decision is still not yet fully understood. When deploying such machine learning-based systems, there would be a benefit to be able to illustrate their choices  in critical applications. We hope that our model, by its simplicity, and by its built-in internal visualization mechanism, may foster this direction of interpretability.  

@@ -1,0 +1,16 @@
+# model            EfficientNet     Deit          Regnet         ResMLP
+#model              INET   V2   
+EfficientNet-B2    80.1   68.8    ?        ?     ?        ?     ?        ? 
+EfficientNet-B3    81.6   70.6    ?        ?     ?        ?     ?        ? 
+EfficientNet-B4    82.9   72.3    ?        ?     ?        ?     ?        ?
+EfficientNet-B5    83.6   73.6    ?        ?     ?        ?     ?        ?
+DeiT-S              ?       ?    79.8    68.5    ?        ?     ?        ?
+DeiT-B              ?       ?    81.8    71.5    ?        ?     ?        ?
+RegNet-16GF         ?       ?     ?        ?    82.9    72.4    ?        ?
+RegNet-8GF          ?       ?     ?        ?    81.7    70.8    ?        ?
+RegNet-4GF          ?       ?     ?        ?    80.0    69.4    ?        ?
+ResMLP-S12          ?       ?     ?        ?     ?        ?     76.6    64.4      
+ResMLP-S24          ?       ?     ?        ?     ?        ?     79.4    67.8      
+ResMLP-B24          ?       ?     ?        ?     ?        ?     81.0    69.0      
+ResMLP-B24/8-dis    ?       ?     ?        ?     ?        ?     83.6    73.4      
+ResMLP-B24/8-im21k  ?       ?     ?        ?     ?        ?     84.5    74.2      

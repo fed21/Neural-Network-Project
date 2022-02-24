@@ -1,0 +1,32 @@
+set grid
+
+basename='acc_vs_resolution_S60'
+load './common.gp'
+
+set size square 0.75
+set xlabel "Image size"
+set ylabel "Imagenet-val top1 acc. (%)"
+#set xtics ("1" 0, "8" 7, "16" 15, "24" 23) 
+#set ytics ("0%%"  0, "20%%"  0.2, "40%%"  0.2, "60%%"  0.6, "80%%" 0.8, "90%%" 0.9, "95%%" 0.95) 
+#set ytics 0,0.2,1
+
+
+set xrange[188:512]
+set yrange[80:85.5]
+
+set key bottom right
+
+#set title "Input space"
+
+
+plot "dat_acc_vs_resolution_S60.txt" using 1:2 with linesp title "S60 trained \\@224" ls 1 lw 2,  \
+     "dat_acc_vs_resolution_S60.txt" using 1:3 with linesp title "S60 FT\\@384 " ls 2 lw 2, \
+     "dat_acc_vs_resolution_S60.txt" using 1:6 with linesp title "S60 FT\\@size" ls 3 lw 2,  \
+     "dat_acc_vs_resolution_S60.txt" using 1:5 with linesp title "S60 Imnet21k FT\\@size" ls 4 lw 2
+
+
+
+
+
+load './gen_pdf.gp'
+

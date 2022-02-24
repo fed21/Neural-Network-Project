@@ -1,0 +1,31 @@
+set grid
+
+basename='acc_vs_flops'
+load './common.gp'
+
+set size square 0.6
+set xlabel "GFLOPs"
+set ylabel "Imagenet-val top1 acc. (%)"
+
+set xrange[1:100]
+set yrange[77:85.5]
+
+set key bottom right
+
+set logscale x
+set xtics ("1" 1, "4" 4, "10" 10, "40" 40, "100" 100)
+
+
+#set title "Accuracy vs. FLOPs"
+
+plot "dat_all.txt" using 5:(stringcolumn(2) eq "EfficientNet"? $7:1/0) with linesp title "EfficientNet" ls 3 lw 2, \
+     "dat_all.txt" using 5:(stringcolumn(2) eq "ViT:DeiT"? $7:1/0) with linesp title "ViT: DeiT" ls 4 lw 2, \
+     "dat_all.txt" using 5:(stringcolumn(2) eq "CaiT"? $7:1/0) with linesp title "ViT: CaiT" ls 5 lw 2, \
+     "dat_all.txt" using 5:(stringcolumn(2) eq "Swin"? $7:1/0) with linesp title "Swin" ls 2 lw 2, \
+     "dat_all.txt" using 5:(stringcolumn(2) eq "ours"? $7:1/0) with linesp title "Ours" ls 1 lw 2
+     
+
+#      "dat_all.txt" using 5:(stringcolumn(2) eq "RegNetY"? $7:1/0) with linesp title "ConvNet: RegNetY" ls 6 lw 2, \
+
+load './gen_pdf.gp'
+

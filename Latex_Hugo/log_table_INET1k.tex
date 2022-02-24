@@ -1,0 +1,142 @@
+\begin{table}[t]
+
+    \caption{
+\textbf{Comparison between architectures on ImageNet  classification.}
+We compare different architectures  based on convolutional networks, Transformers and feedforward networks with comparable FLOPs and number of parameters. All models are trained on ImageNet-1k only.
+We report Top-1 accuracy on the validation set of ImageNet-1k and ImageNet-V2 with different measure of complexity: throughput, FLOPs, number of parameters and peak memory usage.
+For ResNet~\cite{He2016ResNet} and RegNet~\cite{Radosavovic2020RegNet} we report the improved results from Wightman et al.~\cite{wightman2021resnet}.
+The throughput and peak memory are measured on a single V100-32GB GPU with batch size fixed to 256 and mixed precision.  
+\rv{Remove Real Acc. }
+    \label{tab:mainres}}
+    \centering
+    \smallskip
+    \scalebox{0.6}{
+    \begin{tabular}{lcccc|ccc}
+        \toprule
+        Arch.        & \#params & throughput & FLOPS & Peak Mem & Top-1 & Real & V2 \\
+                      & ($\times 10^6$) & (im/s) & ($\times 10^9$) & (MB) & Acc. & Acc. & Acc.\\
+        \midrule
+       % \multirow{2}{*}{{\emph{State of the art}}} &
+    %    CaiT-M48$\uparrow$448$\Upsilon$~\cite{touvron2021going} & 356\pzo  & \dzo5.4 & \pzo329.6 & 5477.8 & 86.5  \\
+     %   & NfNet-F6 SAM~\cite{Brock2021HighPerformanceLI}   & 438\pzo & \pzo16.0 & \pzo377.3& 5519.3& 86.5  \\
+     %   \midrule
+%    ResNet-18~\cite{He2016ResNet,wightman2021resnet} &  11.7    & 8356.0  &  1.8      & 1113.6 & 71.5 & 79.4 & 59.4 \\
+     ResNet-50~\cite{He2016ResNet,wightman2021resnet} &  25.6    & 2587.5  &  4.1      & 2182.2 & 80.4 & 85.7 & 68.7 \\
+%    ResNet-101~\cite{He2016ResNet,wightman2021resnet}&  44.5    & 1586.5  &  7.9      & 2268.7 & 81.5 & 86.3 & 70.3  \\
+%    ResNet-152~\cite{He2016ResNet,wightman2021resnet}&  60.2    &  1122.3 & 11.6      & 2359.5 & 82.0 & 86.4 & 70.6 \\
+    \midrule
+	 RegNetY-4GF~\cite{Radosavovic2020RegNet,wightman2021resnet}       & 21  & 1779.2  & \tzo4.0 & 3041.5 & 81.5 & 86.7 & 70.7 \\
+	 RegNetY-8GF~\cite{Radosavovic2020RegNet,wightman2021resnet}       & 39  & 1158.2 & \tzo8.0 & 3939.3 & 82.2 & 86.7 & 71.1 \\
+	 %RegNetY-12GF~\cite{Radosavovic2020RegNet,wightman2021resnet}      & 52  & 835.1 & \dzo12.0 & 5059 & \\
+	 RegNetY-16GF~\cite{Radosavovic2020RegNet,Touvron2020TrainingDI}      & 84  & 714.3 & \dzo16.0 & 5204.5   & 82.9 & 88.1 & 72.4 \\
+	 %RegNetY-32GF~\cite{Radosavovic2020RegNet,wightman2021resnet}      & 145  & 441.7  & \dzo32.0 & 5745.4   & \\
+
+    \midrule
+    EfficientNet-B0~\cite{tan2019efficientnet} & 5.3  &3855.9  &   &  1835.5  &77.1 & 83.5 & 64.3 \\
+    EfficientNet-B1~\cite{tan2019efficientnet} &7.8   & 2450.1 &   &  2110.6  & 79.1 & 84.9 & 66.9\\
+    EfficientNet-B2~\cite{tan2019efficientnet} & 9.1   & 1851.2 &  & 2583.8   & 80.1 & 85.9 & 68.8 \\
+	 EfficientNet-B3~\cite{tan2019efficientnet} & 12  & 1113.9 & \tzo1.8  &  4825.9  & 81.6 & 86.8 & 70.6\\
+	 EfficientNet-B4~\cite{tan2019efficientnet} & 19  & 573.2 & \tzo4.2 &  10005.8  & 82.9 & 88.0 & 72.3\\
+	 EfficientNet-B5~\cite{tan2019efficientnet} & 30  & 268.3 & \tzo9.9 &  11046.3  & 83.6 & 88.3 & 73.6\\
+	 \midrule
+	 NFNet-F0~\cite{Brock2021HighPerformanceLI} & 72 & 950.4 & 12.4 & 4338.2 & 83.6 & 88.1 & 72.6 \\
+	 NFNet-F1~\cite{Brock2021HighPerformanceLI} & 133 & 337.4 & 35.5 & 6628.1 & 84.7 & 88.9 & 74.4\\
+	 NFNet-F2~\cite{Brock2021HighPerformanceLI} & 194 & 183.7 & 62.6 & 8144.5 & 85.1 & 88.9 & 74.3\\
+	 NFNet-F3~\cite{Brock2021HighPerformanceLI} & 255 & 100.8 & 115.0 & 11239.6 & 85.7 & 89.4 & 75.2 \\
+	 NFNet-F4~\cite{Brock2021HighPerformanceLI} & 316 & 59.0 & 215.3 & 16587.5 & 85.9 & 89.4 & 75.2 \\
+
+    \midrule
+    DeiT-T~\cite{Touvron2020TrainingDI}   & 6  & 3773.9 &  &   536.2 & 72.2 & 80.1 & 60.4\\
+    DeiT-S~\cite{Touvron2020TrainingDI}   & 22  & 1891.1 & \tzo4.6 & 986.6 & 79.8 & 85.7 & 68.5\\
+	DeiT-B~\cite{Touvron2020TrainingDI}    & 86  & 831.3  & \dzo17.5 & 2077.6& 81.8 & 86.7 & 71.5\\
+	
+	%DeiT-T$\uparrow 384$~\cite{Touvron2020TrainingDI}   &  6 & 870.0 &  &   2469.5& \\
+	%DeiT-S$\uparrow 384$~\cite{Touvron2020TrainingDI}   & 22  & 432.9 &  & 4568.9 & \\
+	DeiT-B$\uparrow 384$~\cite{Touvron2020TrainingDI}   & 86  & 194.6 &  & 8956.1  & 83.1 & 87.7 & 72.4 \\
+	\midrule
+	Swin-T-224~\cite{liu2021swin} & 28.3 & 1108.8 & 4.5 & 3345.5 & 81.3 & 86.7 & 69.5 \\
+    Swin-S-224~\cite{liu2021swin} & 49.6 & 717.9 & 8.7 & 3469.6 &  83.0 & 87.7  &  71.8 \\
+
+    Swin-B-224~\cite{liu2021swin} & 87.8  & 531.7 & 15.4 & 4695.5 & 83.5 & \_  &  \_ \\
+    Swin-B-384~\cite{liu2021swin} & 87.8  & 159.1 & 47.0 & 19385.0 & 84.5 & \_  &  \_ \\
+    \midrule
+	%CaiT-M48~\cite{touvron2021going}         & 356   & 119.98 &  & 4325.4 & \\
+	CaiT-S24~\cite{touvron2021going}         & 47 & 469.6 & 9.4 & 1469.0 & 82.7 & \_ & \_ \\
+%	CaiT-S36~\cite{touvron2021going}         & 68  & 314.8 & 13.9 & 1589.6 & 83.3 & 88.0 & 72.5\\
+%	CaiT-S24$\uparrow 384$~\cite{touvron2021going}         & 47 & 39.5 & 32.2 &   8047.8& 84.3 & \_ & \_ \\
+%	CaiT-S36$\uparrow 384$~\cite{touvron2021going}         & 68  & 26.3 & 48.0 &   8171.0& 85.0 & 89.2 & 75.0 \\	
+	
+	%CaiT-M48$\uparrow 384$~\cite{touvron2021going}         & 356   & 12.1 &  & 17207.4  & \\
+	CaiT-M36~\cite{touvron2021going}         & 271  & 159.4 & 53.7 & 3828.2 & 83.8 & \_ & \_\\
+    CaiT-M36$\uparrow 384$~\cite{touvron2021going}         & 271  & 16.1 & 173.3 &   16710.1& 84.9 & \_ & \_\\
+	
+	
+	
+    \midrule
+	
+%    XciT-T-12/16~\cite{el2021xcit} & 6.7 & 2615.9 & 1.2 & 490.9 & 77.1 & \_  & \_ \\
+%    XciT-T-24/16~\cite{el2021xcit} & 12.1 & 1403.4 & 2.3 & 516.9 & 79.4 & \_  & \_ \\
+    XciT-S-12/16~\cite{el2021xcit} & 26.3 & 1372.3 & 4.8  & 1330.5 & 82.0 & \_  & \_ \\
+    XciT-S-24/16~\cite{el2021xcit} & 47.7 & 730.2 & 9.1  & 1452.4 & 82.6 & \_  & \_\\
+%    XciT-M-24/16~\cite{el2021xcit} & 84.4 & 545.8 & 16.2 & 2010.7 & 82.7 & \_  & \_ \\
+%    XciT-L-24/16~\cite{el2021xcit} & 189.1 & 331.3 &36.1  & 3315.0 & 82.9 & \_  & \_  \\
+    
+    %XciT-S-12/8~\cite{el2021xcit} & 26.2 & 364.3 &  & 2663.1 &  \\
+    %XciT-S-24/8~\cite{el2021xcit} & 47.6 & 190.9 &  & 2784.9 &  \\
+    %XciT-M-24/8~\cite{el2021xcit} & 84.3 & 140.1 &  & 3790.5 &  \\
+    %XciT-L-24/8~\cite{el2021xcit} & 188.9 & 84.6 &  & 5975.7 &  \\
+
+    \midrule
+    ConvMixer-768/32~\cite{anonymous2022patches} & 21.1 & 271.3 & 20.9 & 2644.5 & 80.2 & \_ & \_\\
+    ConvMixer-1536/20~\cite{anonymous2022patches} & 51.6 & 156.7 & 51.4 & 5312.5 & 81.4 & \_ & \_\\
+    
+    \midrule
+    ResMLP-S12 conv3x3~\cite{Touvron2021ResMLPFN} &  16.7  & 3216.7 & \tzo3.2  & 763.3 &  77.0 & 84.0 & 65.5\\
+    ResMLP-S12~\cite{Touvron2021ResMLPFN} &  15  & 3301.3 & \tzo3.0  & 754.7 &  76.6 & 83.3 & 64.4\\
+    ResMLP-S24~\cite{Touvron2021ResMLPFN} &  30  &  1681.2    & \tzo6.0  & 843.9 &  79.4 & 85.3 & 67.9 \\
+    ResMLP-B24~\cite{Touvron2021ResMLPFN} &  116\pzo &      1120.0    & \dzo23.0 & 930.5  &   81.0 & 86.1 & 69.0 \\
+    \midrule
+    \rowcolor{Goldenrod}
+    \ours-S20 & 10.2  & 3011.1 & 1.6 &   1235.6 & 78.7 & 85.3 & 67.2\\
+    \rowcolor{Goldenrod}
+    \ours-S36 & 16.2  & 1799.2  & 2.6 & 1269.9 &  80.7 & 86.6 & 69.7 \\
+    \rowcolor{Goldenrod}
+    \ours-S60 & 25.2  & 1124.8 & 4.0 & 1321.4 & 82.1 & 87.8 & 71.0\\
+    \rowcolor{Goldenrod}
+    \ours-S120&  47.7 & 580.0 & 7.5 & 1450.1 & 83.2 & 87.8 &  72.5\\
+%    \rowcolor{Goldenrod}
+%    \ours-S180& 70.2  & 391.3 & 11.1 & 1578.7 & 83.5 & 88.1 & 72.9\\
+%    \rowcolor{Goldenrod}
+%    \ours-B36 &  63.7 & 863.1 & 10.2 & 2580.2 & 82.8 & 87.7 & 71.9\\
+    \rowcolor{Goldenrod}
+    \ours-B60 &  99.4 & 541.1 & 15.8 & 2789.6 & 83.5 & 88.1&  72.6\\
+    \rowcolor{Goldenrod}
+    \ours-B120 & 188.6  & 280.4 & 29.9  & 3313.8 & 84.1 & 88.4 & 73.9\\
+    \rowcolor{Goldenrod}
+    \ours-L60 & 176.0  & 394.0 & 28.1 &3901.5  & 83.8 & 88.4 & 73.6 \\
+   % \rowcolor{Goldenrod}
+%    \ours-L120 &  334.3 & 204.1 & 53.0 & 4815.1 & 84.1 & 88.3 & 74.1\\
+    \midrule
+%    \rowcolor{Goldenrod}
+%    \ours-S20$\uparrow 384$ & 10.2  & 1042.1 & 4.8 & 3514.6 & 80.5 & 86.8 & 69.7 \\
+    \rowcolor{Goldenrod}
+    \ours-S36$\uparrow 384$ & 16.2  & 626.3 & 7.6 & 3549.0 & 82.6 & 88.1 & 72.3\\
+    \rowcolor{Goldenrod}
+    \ours-S60$\uparrow 384$ & 25.2  & 391.9 & 11.8 & 3600.4 & 83.7 & 88.9 & 73.4 \\
+    \rowcolor{Goldenrod}
+    \ours-S120$\uparrow 384$ & 47.7 & 202.4 & 22.1 & 3729.1 & 84.7 & 89.0 & 74.9\\
+%    \rowcolor{Goldenrod}
+%    \ours-S180$\uparrow 384$ & 70.2  & 136.4 & 32.5 & 3860.6 & 85.0 & 89.2 & 74.9\\
+%    \rowcolor{Goldenrod}
+%    \ours-B36$\uparrow 384$ & 63.7  & 292.4 & 30.1 & 6854.0 &\\
+    \rowcolor{Goldenrod}
+    \ours-B60$\uparrow 384$ & 99.4  & 184.0 & 46.5 & 7063.3 & 84.8 & 89.1 & 74.5\\
+    \rowcolor{Goldenrod}
+   \ours- B120$\uparrow 384$& 188.6  & 95.6 & 87.7 & 7587.3 & \\
+   \rowcolor{Goldenrod}
+   \ours-L60$\uparrow 384$&  176.0  &132.2  & 82.5 & 9504.6 & \\
+  % \rowcolor{Goldenrod}
+  % \ours-L120$\uparrow 384$& 334.3  & 68.6 & 155.5 & 10409.9 & \\
+    \bottomrule
+    \end{tabular}}
+\end{table}

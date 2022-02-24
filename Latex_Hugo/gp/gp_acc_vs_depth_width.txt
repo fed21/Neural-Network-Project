@@ -1,0 +1,48 @@
+set grid
+
+basename='acc_vs_depth_width'
+load './common.gp'
+
+set size square 0.75
+set xlabel "Depth N"
+set ylabel "Imagenet-val top1 acc. (%)"
+#set xtics ("1" 0, "8" 7, "16" 15, "24" 23) 
+#set ytics ("0%%"  0, "20%%"  0.2, "40%%"  0.2, "60%%"  0.6, "80%%" 0.8, "90%%" 0.9, "95%%" 0.95) 
+#set ytics 0,0.2,1
+
+
+set xrange[20:182]
+set yrange[78:86]
+
+set key bottom right
+
+#set title "Input space"
+
+set label "S20"  at 23,78.67  textcolor ls 1
+set label "S36"  at 39,80.71  textcolor ls 1
+set label "S60"  at 63,81.93  textcolor ls 1
+set label "S120" at 123,83.00  textcolor ls 1
+set label "S180" at 160,83.75  textcolor ls 1
+set label "B36"  at 27,83.2 textcolor ls 1
+set label "B60"  at 61,83.31 textcolor ls 1
+set label "B120" at 123,84.13 textcolor ls 1
+
+set label "S60"  at 54,84  textcolor ls 2
+set label "S180" at 160,85.2  textcolor ls 2
+
+set label "B36"  at 27,84 textcolor ls 2
+set label "B60"  at 61,85.1 textcolor ls 2
+set label "B120" at 123,85.2 textcolor ls 2
+
+
+plot "dat_acc_vs_depth_width.txt" using 1:2 with linesp title "@ size 224" ls 1 lw 2,  \
+     "dat_acc_vs_depth_width.txt" using 1:4 with linesp notitle ls 1 lw 2, \
+     "dat_acc_vs_depth_width.txt" using 1:3 with linesp title "@ size 384" ls 2 lw 2,  \
+     "dat_acc_vs_depth_width.txt" using 1:5 with linesp notitle ls 2 lw 2
+
+
+
+
+
+load './gen_pdf.gp'
+

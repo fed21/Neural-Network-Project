@@ -1,0 +1,27 @@
+\appendix
+
+
+\clearpage
+% make supplementary counters different from main document
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+% \counterwithin{algorithm}{section}
+\counterwithin{equation}{section}
+% \counterwithin{definition}{section}
+% \counterwithin{theorem}{section}
+% \counterwithin{proposition}{section}
+% \appendix
+
+\pagenumbering{Roman}  % roman page numbers on supplementary
+\pagestyle{plain}
+
+\twocolumn[
+\newpage
+\null
+\vskip .375in
+\begin{center}
+
+{\Large \bf \inserttitle ~ \\ \vspace{0.5cm} \large Supplementary Material \par}
+  \vspace*{24pt}
+  {\par}
+\end{center}]

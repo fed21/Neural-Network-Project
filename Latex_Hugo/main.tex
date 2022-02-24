@@ -1,0 +1,133 @@
+% CVPR 2022 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+%
+\usepackage[final]{cvpr}              %
+%
+
+\usepackage{times}
+%
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%
+%
+\usepackage{booktabs} %
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+%
+\usepackage{multirow}
+\usepackage[font=footnotesize]{caption}
+\usepackage{placeins}
+   
+%
+\usepackage{xspace}
+%
+%
+
+
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+% 
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+\newcommand{\rv}[1]{{\color{red}#1}}
+\newcommand{\hugo}[1]{{\color{blue!20!red}[Hugo: #1]}}
+\newcommand{\piotr}[1]{{\color{cyan}[Piotr: #1]}}
+\newcommand{\alaa}[1]{{\color{green!20!blue}[\textbf{Alaa}: #1]}}
+\newcommand{\matt}[1]{\textcolor{magenta}{[\textbf{Matt}: #1]}}
+\newcommand{\matth}[1]{\textcolor{magenta}{#1}}
+
+\newcommand {\placeholder}[2]{
+    {\centering
+         \colorbox{blue!5}{
+         \begin{minipage}{0.96\linewidth}
+         #2 ~\vspace{#1}~
+        \end{minipage}}
+}}
+
+
+\def \etal {\emph{et al.\xspace}}
+
+
+
+\def\ournet {PatchConvNet\xspace}
+\def\ours {Ours\xspace}
+
+\def \pzo {\phantom{0}} 
+\def \dzo {\phantom{00}} 
+\def \tzo {\phantom{000}}
+\def \qzo {\phantom{0000}} 
+
+\definecolor{Goldenrod}{RGB}{245,245,220}
+
+%
+
+\hyphenation{Conv-Net}
+\hyphenation{Patch-Conv-Net}
+
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Augmenting Convolutional networks with attention-based aggregation}
+
+\author{\begin{minipage}{\linewidth}
+\begin{center}
+\scalebox{1.0}{\normalsize Hugo Touvron$^{1,2}$ \hspace{0.35cm} Matthieu Cord$^{2}$ \hspace{0.35cm} Alaaeldin El-Nouby$^{1,3}$ \hspace{0.35cm} Piotr Bojanowski$^{1}$ \hspace{0.35cm}}\\[0.1cm]
+\scalebox{1.0}{\normalsize Armand Joulin$^{1}$ \hspace{0.35cm} Gabriel Synnaeve$^{1}$ \hspace{0.35cm}   Herv\'e J\'egou$^{1}$}
+\\[0.2cm]
+%
+\scalebox{1.0}{\normalsize \textmd{$^1$Meta AI\hspace{0.6cm} $^2$Sorbonne University\hspace{0.6cm} $^3$Inria}}
+\\[2.0cm]
+%  
+\end{center}
+\end{minipage}
+}
+
+
+
+
+
+
+\makeatletter
+\let\inserttitle\@title
+%
+\makeatother
+\maketitle
+
+
+%%%%%%%%% ABSTRACT
+\begin{abstract} 
+We show how to augment any convolutional network with an attention-based global map to achieve non-local reasoning. We replace the final average pooling by an attention-based aggregation layer akin to a single transformer block, that weights how the patches are involved in the classification decision. We plug this learned aggregation layer with a simplistic patch-based convolutional network parametrized by 2 parameters (width and depth). In contrast with a pyramidal design, this architecture family maintains the input patch resolution across all the layers. It yields surprisingly competitive trade-offs between accuracy and complexity, in particular in terms of memory consumption, as shown by our experiments on various computer vision tasks: object classification, image segmentation and detection. %
+\end{abstract}
+
+
+\input{introduction}
+\input{related}
+\input{method}
+\input{experiments}
+\input{conclusion}
+
+
+
+
+
+
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+\clearpage
+\input{appendix}
+\end{document}

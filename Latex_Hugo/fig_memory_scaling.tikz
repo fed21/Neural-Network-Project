@@ -1,0 +1,17 @@
+\begin{tikzpicture}
+\begin{axis}[
+  xlabel=resolution,
+  ylabel=memory (MB),
+  ymax=20000,
+  xtick=data,
+  %xmode=log,
+  %log ticks with fixed point,
+  %ymode=log,
+  legend style={at={(0.03,0.02)},anchor=south west},
+  width=\columnwidth,
+  height=\ifgpuxlabel 6.7cm \else 6.3cm \fi
+]
+\addplot table [y=Our-S60, x=Resolution]{fig_memory_scaling.dat};
+\addlegendentry{Our-S60}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,39 @@
+set grid
+
+basename='imagenet_val-vs-v2'
+load './common.gp'
+
+set size square 0.7
+set xlabel "Imagenet-val top1 acc. (%)"
+set ylabel "Imagenet-V2 top1 acc. (%)"
+#set xtics ("1" 0, "8" 7, "16" 15, "24" 23) 
+#set ytics ("0%%"  0, "20%%"  0.2, "40%%"  0.2, "60%%"  0.6, "80%%" 0.8, "90%%" 0.9, "95%%" 0.95) 
+#set ytics 0,0.2,1
+
+
+set xrange[76.5:85]
+set yrange[64:75]
+
+set key bottom right
+
+#set title "Input space"
+
+set label "S12" at 76.8,64.4 
+set label "S24" at 79.6,67.7 
+set label "B24" at 81.2,69.0 
+set label "B24/8 distil" at 83.3,73.4 right
+set label "B24/8 Imnet21k" at 84.2,74.3 right
+
+plot "dat_example.txt" using 2:3 with linesp title "EfficientNet" ls 1 lw 2,  \
+     "dat_example.txt" using 4:5 with linesp title "DeiT" ls 2 lw 2, \
+     "dat_example.txt" using 6:7 with linesp title "RegNet" ls 4 lw 2, \
+     "dat_example.txt" using 8:9 with linesp title "ResMLP" ls 5 lw 2
+
+
+
+
+
+
+
+load './gen_pdf.gp'
+

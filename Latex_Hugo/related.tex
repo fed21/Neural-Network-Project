@@ -1,0 +1,41 @@
+\section{Related work}
+
+
+\paragraph{Attention-based architectures for vision.} 
+Early works have introduced attention into convnets~\cite{Bello2019AttentionAC,Ramachandran2019StandAloneSI,Shen2020GlobalSN,Wang2018NonlocalNN,Wu2020VisualTT},  
+%
+but it is only recently that a fully attention-based architecture, the vision transformer~\cite{dosovitskiy2020image} (ViT), has become competitive with convnets on ImageNet~\cite{dosovitskiy2020image,Touvron2020TrainingDI}. 
+The particularity of this model is that it processes images as a set of non-overlapping patches, without any convolutional or downsampling layers. 
+Nevertheless, several works have recently proposed to re-introduce convolutions and downsampling into this architecture. 
+% 
+For example, some architectures~\cite{graham2021levit,Xiao2021EarlyCH} leverage convolutional layers in the first layers of the vision transformer architecture, while others, such as Swin~\cite{liu2021swin}, LeViT~\cite{graham2021levit}, or PiT~\cite{Heo2021RethinkingSD} exploit a pyramid structure to gradually reduce the spatial resolution of the features. 
+These pyramid-based methods are more compatible with prior detection frameworks, and aim at improving the computational efficiency (FLOPs). 
+As a downside, these pyramidal approaches dramatically reduce the resolution of the last layers, and hence the quality of their attention maps, making their predictions harder to interpret. Another shortcoming is their relatively high memory usage~\cite{sandler2019nondiscriminative}. 
+
+%
+
+
+
+\paragraph{MLP and other patch-based approaches.} 
+Architectures based on patches~\cite{liu2021ready}  have been proposed beyond transformers, in particular, based on Multi-Layer Perceptron (MLP) layers such as MLP-Mixer~\cite{tolstikhin2021MLPMixer} and ResMLP~\cite{Touvron2021ResMLPFN}.
+%
+Most related to our work, the ablation study of ResMLP~\cite{Touvron2021ResMLPFN} shows the potential of patch-wise convolution over MLPs in terms of performance. 
+%
+In line of the ConViT model~\cite{dAscoli2021ConViTIV}, CoatNet~\cite{Dai2021CoAtNetMC} is a patch-based architecture with convolutional blocks followed by transformers blocks.Concurrently, replacing self-attention layers with convolution layers has been explored in ConvMixer~\cite{anonymous2022patches}.
+
+%
+
+
+
+
+\paragraph{Explainability of the classification decision.} 
+%
+There are many strategies to explain the classification decision of a network~\cite{ribeiro2016lime, zeiler2014visualizing}, and most notably by highlighting the most influential regions that led to a decision~\cite{simonyan2014deep, Zhou2016LearningDF,fong2017perturbation}.  
+The family of CAM methods~\cite{Wang2020ScoreCAMSV,Chattopadhyay2018GradCAMGG,Selvaraju2019GradCAMVE,Zhou2016LearningDF} shows that the gradients from a network decision contain information about object locations that can be projected back to the image. 
+%
+These methods act as general external probes that project the network activity back into the image space, even though Oquab \etal~\cite{oquab2015object} have shown evidence that convnet features contain rough information about the localization of objects.
+Unlike these external approaches, the self-attention layers of vision transformers offer a direct access to the location of the information used to make classification decisions~\cite{dosovitskiy2020image, Touvron2020TrainingDI,touvron2021going,caron2021emerging}. 
+Our built-in class attention mechanism shares the same spirit of \emph{interpretable by design} computer vision models~\cite{rudin2019nature}. 
+However, unlike our mechanism, self-attention layers do not distinguish between classes on the same image without additional steps~\cite{Chefer2021TransformerIB}.
+
+%
