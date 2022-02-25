@@ -8,7 +8,7 @@ Augmenting Convolutional networks with attention-based aggregation
  - [ ] PatchConvNet
     - [ ] Describe architectures
     - [ ] Our modifications (input + num_pathches)
- - [ ] Dataset --> our vs their
+ - [x] Dataset --> our vs their
  - [ ] Training receipts and results in the paper
  - [ ] Training receipts and OUR results
  - [ ] Digression about other tasks in CV
