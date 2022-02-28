@@ -5,6 +5,7 @@ Augmenting Convolutional networks with attention-based aggregation
  - [ ] Convolutional Layers generally speaking
  - [ ] Attention layers generally speaking
  - [ ] Gentle introduction to ViT
+ - [x] ResNet
  - [ ] PatchConvNet
     - [ ] Describe architectures
     - [ ] Our modifications (input + num_pathches)
